@@ -509,21 +509,37 @@ let canvas, ctx;
 
 function setupScratchpad() {
   const toggleBtn = document.getElementById("scratchpad-toggle");
+  const quickToggleBtn = document.getElementById("quick-scratchpad-toggle");
   const panel = document.getElementById("scratchpad-panel");
-  const icon = document.getElementById("scratchpad-icon");
+  const container = document.getElementById("global-scratchpad");
   canvas = document.getElementById("scratchpad-canvas");
-  if (!canvas) return;
-  ctx = canvas.getContext("2d");
+  if (canvas) ctx = canvas.getContext("2d");
 
-  // Toggle Collapse/Expand
-  toggleBtn.addEventListener("click", () => {
+  function togglePad() {
+    if (!panel) return;
     panel.classList.toggle("hidden");
     const isHidden = panel.classList.contains("hidden");
-    icon.textContent = isHidden ? "▼" : "▲";
+    if (toggleBtn) toggleBtn.textContent = isHidden ? "Show Pad ▼" : "Hide Pad ▲";
     if (!isHidden) {
-      resizeCanvas();
+      setTimeout(() => {
+        const mode = document.getElementById("mode-draw-btn")?.classList.contains("active") ? "draw" : "type";
+        if (mode === "draw") resizeCanvas();
+      }, 50);
     }
-  });
+  }
+
+  if (toggleBtn) {
+    toggleBtn.addEventListener("click", togglePad);
+  }
+
+  if (quickToggleBtn) {
+    quickToggleBtn.addEventListener("click", () => {
+      if (panel && panel.classList.contains("hidden")) {
+        togglePad();
+      }
+      container?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  }
 
   // Canvas Drawing Events (Mouse & Touch)
   canvas.addEventListener("mousedown", startDrawing);
@@ -635,4 +651,57 @@ window.clearScratchpad = function() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
 };
+
+// Mode Switcher: Type vs Draw
+window.switchPadMode = function(mode) {
+  const typeView = document.getElementById("scratchpad-type-view");
+  const drawView = document.getElementById("scratchpad-draw-view");
+  const typeBtn = document.getElementById("mode-type-btn");
+  const drawBtn = document.getElementById("mode-draw-btn");
+
+  if (mode === 'type') {
+    typeView.classList.remove("hidden");
+    drawView.classList.add("hidden");
+    typeBtn.classList.add("active");
+    drawBtn.classList.remove("active");
+  } else {
+    typeView.classList.add("hidden");
+    drawView.classList.remove("hidden");
+    typeBtn.classList.remove("active");
+    drawBtn.classList.add("active");
+    resizeCanvas();
+  }
+};
+
+// Insert Math Symbol at Cursor in Textarea
+window.insertSymbol = function(sym) {
+  const textarea = document.getElementById("scratchpad-textarea");
+  if (!textarea) return;
+
+  const start = textarea.selectionStart || 0;
+  const end = textarea.selectionEnd || 0;
+  const text = textarea.value;
+
+  let insertText = sym;
+  let cursorOffset = sym.length;
+
+  // If inserting parenthesis "( )", put cursor in the middle
+  if (sym === '( )') {
+    insertText = '()';
+    cursorOffset = 1;
+  }
+
+  textarea.value = text.substring(0, start) + insertText + text.substring(end);
+  textarea.focus();
+  textarea.setSelectionRange(start + cursorOffset, start + cursorOffset);
+};
+
+window.clearTextScratchpad = function() {
+  const textarea = document.getElementById("scratchpad-textarea");
+  if (textarea) {
+    textarea.value = "";
+    textarea.focus();
+  }
+};
+
 

@@ -87,25 +87,82 @@
           <div class="view-switchers">
             <button class="tab-btn active" data-tab="learn">📖 Learn & Examples</button>
             <button class="tab-btn" data-tab="practice">✏️ Practice Quiz</button>
+            <button class="btn btn-sm" id="quick-scratchpad-toggle" style="background:#0f766e; border-color:#0f766e;">📝 Rough Pad</button>
           </div>
         </div>
 
-        <!-- Tab 1: Learn -->
-        <div id="tab-learn" class="tab-content active">
-          <div id="chapter-body">
-            <!-- Injected via JavaScript -->
+        <!-- Always-Accessible Scratchpad (Open by Default) -->
+        <div class="scratchpad-container" id="global-scratchpad">
+          <div class="scratchpad-header-bar">
+            <div class="scratchpad-header-left">
+              <span class="badge" style="background:#0f766e;">Scratchpad</span>
+              <strong>📝 Rough Work & Math Solver Tools</strong>
+            </div>
+            <div class="scratchpad-header-right">
+              <!-- Mode Switcher -->
+              <div class="pad-mode-bar" style="margin: 0; border: none; padding: 0;">
+                <button class="pad-mode-btn active" id="mode-type-btn" onclick="switchPadMode('type')">⌨️ Type & Symbols</button>
+                <button class="pad-mode-btn" id="mode-draw-btn" onclick="switchPadMode('draw')">✍️ Pen Canvas</button>
+              </div>
+              <button class="btn btn-sm btn-secondary" id="scratchpad-toggle" style="margin-left: 6px;">Hide Pad ▲</button>
+            </div>
           </div>
-        </div>
 
-        <!-- Tab 2: Practice Quiz -->
-        <div id="tab-practice" class="tab-content">
-          <!-- Collapsible Scratchpad -->
-          <div class="scratchpad-container">
-            <button class="scratchpad-toggle-btn" id="scratchpad-toggle">
-              <span>📝 <strong>Rough Work / Scratchpad</strong> (Click to open/close)</span>
-              <span id="scratchpad-icon">▼</span>
-            </button>
-            <div id="scratchpad-panel" class="scratchpad-panel hidden">
+          <div id="scratchpad-panel" class="scratchpad-panel">
+            <!-- Keyboard Typing Mode (Active by default) -->
+            <div id="scratchpad-type-view" class="pad-view">
+              <!-- Math Function / Symbol Palette -->
+              <div class="math-symbol-bar">
+                <div class="symbol-group">
+                  <span class="symbol-group-label">🔢 Math Operations:</span>
+                  <button class="sym-btn" onclick="insertSymbol('+')" title="Add">+</button>
+                  <button class="sym-btn" onclick="insertSymbol('−')" title="Subtract">−</button>
+                  <button class="sym-btn" onclick="insertSymbol('×')" title="Multiply">×</button>
+                  <button class="sym-btn" onclick="insertSymbol('÷')" title="Divide">÷</button>
+                  <button class="sym-btn" onclick="insertSymbol('=')" title="Equals">=</button>
+                  <button class="sym-btn" onclick="insertSymbol('≠')" title="Not Equal">≠</button>
+                  <button class="sym-btn" onclick="insertSymbol('±')" title="Plus-Minus">±</button>
+                </div>
+                <div class="symbol-group">
+                  <span class="symbol-group-label">📐 Algebra & Powers:</span>
+                  <button class="sym-btn" onclick="insertSymbol('x')">x</button>
+                  <button class="sym-btn" onclick="insertSymbol('y')">y</button>
+                  <button class="sym-btn" onclick="insertSymbol('²')" title="Squared">x²</button>
+                  <button class="sym-btn" onclick="insertSymbol('³')" title="Cubed">x³</button>
+                  <button class="sym-btn" onclick="insertSymbol('√')" title="Square Root">√</button>
+                  <button class="sym-btn" onclick="insertSymbol('π')" title="Pi">π</button>
+                </div>
+                <div class="symbol-group">
+                  <span class="symbol-group-label">🍕 Fractions & Logic:</span>
+                  <button class="sym-btn" onclick="insertSymbol('½')">½</button>
+                  <button class="sym-btn" onclick="insertSymbol('⅓')">⅓</button>
+                  <button class="sym-btn" onclick="insertSymbol('¼')">¼</button>
+                  <button class="sym-btn" onclick="insertSymbol('¾')">¾</button>
+                  <button class="sym-btn" onclick="insertSymbol('%')">%</button>
+                  <button class="sym-btn" onclick="insertSymbol('°')" title="Degrees">°</button>
+                  <button class="sym-btn" onclick="insertSymbol('∴')" title="Therefore">∴</button>
+                  <button class="sym-btn" onclick="insertSymbol('∵')" title="Because">∵</button>
+                  <button class="sym-btn" onclick="insertSymbol(':')" title="Ratio">:</button>
+                  <button class="sym-btn" onclick="insertSymbol('::')" title="Proportion">::</button>
+                  <button class="sym-btn" onclick="insertSymbol('≤')">≤</button>
+                  <button class="sym-btn" onclick="insertSymbol('≥')">≥</button>
+                  <button class="sym-btn" onclick="insertSymbol('( )')">( )</button>
+                </div>
+              </div>
+
+              <!-- Text Area for Rough Work -->
+              <textarea id="scratchpad-textarea" class="scratchpad-textarea" placeholder="✍️ Type rough calculations here (e.g. 24 ÷ 4 = 6 or 5x - 7 = 18). Click any symbol button above to insert it!"></textarea>
+              
+              <div class="pad-text-footer">
+                <span style="font-size: 11px; color: var(--text-muted);">💡 Click any symbol button above to insert directly into your rough work.</span>
+                <div>
+                  <button class="btn btn-sm btn-secondary" onclick="clearTextScratchpad()">Clear Text</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Drawing Canvas Mode -->
+            <div id="scratchpad-draw-view" class="pad-view hidden">
               <div class="scratchpad-toolbar">
                 <div class="scratchpad-tools">
                   <button class="btn btn-sm active-tool" id="tool-pen" onclick="setPadTool('pen')">✏️ Pen</button>
@@ -121,10 +178,20 @@
                   <button class="btn btn-sm btn-secondary" onclick="clearScratchpad()">Clear Pad</button>
                 </div>
               </div>
-              <canvas id="scratchpad-canvas" width="800" height="220"></canvas>
+              <canvas id="scratchpad-canvas" width="800" height="180"></canvas>
             </div>
           </div>
+        </div>
 
+        <!-- Tab 1: Learn -->
+        <div id="tab-learn" class="tab-content active">
+          <div id="chapter-body">
+            <!-- Injected via JavaScript -->
+          </div>
+        </div>
+
+        <!-- Tab 2: Practice Quiz -->
+        <div id="tab-practice" class="tab-content">
           <div id="quiz-container">
             <!-- Injected via JavaScript -->
           </div>
