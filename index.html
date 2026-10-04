@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Class 6 Math Master - Pakistan Curriculum</title>
+  <!-- KaTeX for rendering mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Top Header -->
+  <header class="top-nav">
+    <div class="logo">
+      <button class="mobile-menu-btn" id="mobile-menu-toggle" aria-label="Toggle menu">☰</button>
+      <span class="badge">Class 6</span>
+      <strong>Math Master PK</strong>
+      <span class="subtext">| SNC & Board</span>
+    </div>
+    <div class="header-stats">
+      <span class="stat-item">⭐ <strong id="global-score">0</strong> pts</span>
+      <span class="stat-item">✅ <strong id="solved-count">0</strong>/<span id="total-questions-count">30</span></span>
+      <button class="btn btn-sm btn-secondary" id="reset-progress-btn" title="Reset your score">Reset</button>
+    </div>
+  </header>
+
+  <!-- Mobile Overlay Backdrop -->
+  <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
+  <div class="main-container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-title">TABLE OF CONTENTS</div>
+      <nav id="chapter-list">
+        <!-- Dynamically injected or static links -->
+        <button class="nav-item active" data-chapter="0">
+          <span class="ch-num">1</span>
+          <span class="ch-title">Factors & Multiples (HCF/LCM)</span>
+        </button>
+        <button class="nav-item" data-chapter="1">
+          <span class="ch-num">2</span>
+          <span class="ch-title">Integers & Number Line</span>
+        </button>
+        <button class="nav-item" data-chapter="2">
+          <span class="ch-num">3</span>
+          <span class="ch-title">Fractions, Decimals & %</span>
+        </button>
+        <button class="nav-item" data-chapter="3">
+          <span class="ch-num">4</span>
+          <span class="ch-title">Ratio & Proportion</span>
+        </button>
+        <button class="nav-item" data-chapter="4">
+          <span class="ch-num">5</span>
+          <span class="ch-title">Introduction to Algebra</span>
+        </button>
+        <button class="nav-item" data-chapter="5">
+          <span class="ch-num">6</span>
+          <span class="ch-title">Geometry & Mensuration</span>
+        </button>
+        <button class="nav-item" data-chapter="6">
+          <span class="ch-num">7</span>
+          <span class="ch-title">Data Handling & Statistics</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-title" style="margin-top: 10px;">INTERACTIVE TOOLS</div>
+      <nav id="tools-list">
+        <button class="nav-item" data-tool="hcf-lcm">🧮 HCF & LCM Finder</button>
+        <button class="nav-item" data-tool="algebra-solver">⚡ Linear Equation Solver</button>
+        <button class="nav-item" data-tool="geo-calc">📐 Area & Perimeter Tool</button>
+        <button class="nav-item" data-tool="stats-calc">📊 Mean, Median, Mode</button>
+      </nav>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="content-panel">
+      <!-- Chapter Content Container -->
+      <section id="chapter-view" class="view-section">
+        <div class="content-header">
+          <div>
+            <span class="badge" id="ch-badge">Chapter 1</span>
+            <h1 id="ch-heading">Factors & Multiples</h1>
+          </div>
+          <div class="view-switchers">
+            <button class="tab-btn active" data-tab="learn">📖 Learn & Examples</button>
+            <button class="tab-btn" data-tab="practice">✏️ Practice Quiz</button>
+          </div>
+        </div>
+
+        <!-- Tab 1: Learn -->
+        <div id="tab-learn" class="tab-content active">
+          <div id="chapter-body">
+            <!-- Injected via JavaScript -->
+          </div>
+        </div>
+
+        <!-- Tab 2: Practice Quiz -->
+        <div id="tab-practice" class="tab-content">
+          <!-- Collapsible Scratchpad -->
+          <div class="scratchpad-container">
+            <button class="scratchpad-toggle-btn" id="scratchpad-toggle">
+              <span>📝 <strong>Rough Work / Scratchpad</strong> (Click to open/close)</span>
+              <span id="scratchpad-icon">▼</span>
+            </button>
+            <div id="scratchpad-panel" class="scratchpad-panel hidden">
+              <div class="scratchpad-toolbar">
+                <div class="scratchpad-tools">
+                  <button class="btn btn-sm active-tool" id="tool-pen" onclick="setPadTool('pen')">✏️ Pen</button>
+                  <button class="btn btn-sm btn-secondary" id="tool-eraser" onclick="setPadTool('eraser')">🧹 Eraser</button>
+                  <input type="color" id="pen-color" value="#1d4ed8" title="Pen Color" class="color-picker">
+                  <select id="pen-size" class="input-control" style="width: auto; padding: 1px 4px; font-size: 11px;">
+                    <option value="2">Thin (2px)</option>
+                    <option value="4" selected>Medium (4px)</option>
+                    <option value="8">Thick (8px)</option>
+                  </select>
+                </div>
+                <div class="scratchpad-actions">
+                  <button class="btn btn-sm btn-secondary" onclick="clearScratchpad()">Clear Pad</button>
+                </div>
+              </div>
+              <canvas id="scratchpad-canvas" width="800" height="220"></canvas>
+            </div>
+          </div>
+
+          <div id="quiz-container">
+            <!-- Injected via JavaScript -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Tools View (Hidden by default) -->
+      <section id="tool-view" class="view-section hidden">
+        <div class="content-header">
+          <div>
+            <span class="badge">Interactive Lab</span>
+            <h1 id="tool-heading">Math Tool</h1>
+          </div>
+          <button class="btn btn-sm" id="back-to-chapter-btn">← Back to Chapter</button>
+        </div>
+        <div id="tool-body" class="tool-content">
+          <!-- Injected via JavaScript -->
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer class="footer">
+    <span>Developed for 6th Class Math Students in Pakistan 🇵🇰</span>
+    <span>Based on Single National Curriculum (SNC) & PCTB</span>
+  </footer>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
